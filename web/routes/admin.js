@@ -12,8 +12,8 @@ router.post('/stat', function *() {
     this.body = yield model.countBySource(['soufun', '58', 'anjuke']);
 });
 
-router.get('/', function*(){
-
+router.get('/source/:source', function*(){
+    this.body = this.params.source;
 });
 
 module.exports = router;
