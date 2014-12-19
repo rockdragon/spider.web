@@ -1,0 +1,28 @@
+{
+  "name": "spider.web",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node --harmony ./web/www.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rockdragon/spider.web.git"
+  },
+  "dependencies":{
+    "rimraf": "*",
+    "winston": "*",
+    "underscore": "*",
+    "underscore.string": "*",
+    "sequelize": "*",
+    "mysql": "*",
+    "co": "^4.0",
+    "koa": "^0.14.0",
+    "koa-mount": "*",
+    "koa-ejs": "*",
+    "koa-static": "*",
+    "koa-router": "*"
+  },
+  "engines": {
+    "node": ">=0.11.14"
+  }
+}
