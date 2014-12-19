@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular": "*"
+    "angular": "*",
+    "ng-grid": "*"
   }
 }
