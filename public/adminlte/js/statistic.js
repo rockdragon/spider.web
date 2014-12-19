@@ -3,7 +3,7 @@ var app = angular.module('statisticApp', []);
 app.factory('dataService', ['$http', function($http){
     return {
         data: function(self) {
-            $http.post('/data').then(function (response) {
+            $http.post('/admin/stat').then(function (response) {
                 var json = response.data;
                 self.data.count_soufun = json[0].ct;
                 self.data.count_58 = json[1].ct;

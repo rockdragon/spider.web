@@ -23,10 +23,8 @@ render(app, {
 });
 
 //routes
-var index = require(getAbsolutePath('web/routes/index'));
-var data = require(getAbsolutePath('web/routes/data'));
-app.use(mount('/data', data.middleware()));
-app.use(mount('/admin', index.middleware()));
+var admin = require(getAbsolutePath('web/routes/admin'));
+app.use(mount('/admin', admin.middleware()));
 
 //listen
 app.listen(3000);

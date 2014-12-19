@@ -195,8 +195,8 @@ if (configs && configs.DBConnection) {
     }
 
     /*
-    * query a bundle of count, or single
-    * */
+     * query a bundle of count, or single
+     * */
     function countBySource(source) {
         if (_.isArray(source)) {
             var query = [];
@@ -204,13 +204,39 @@ if (configs && configs.DBConnection) {
                 var q = util.format('SELECT count(1) ct FROM spider.house where source = "%s"', source[i]);
                 query.push(q);
             }
-            return sequelize.query(query.join(' UNION ALL ')).then(function(tb){
+            return sequelize.query(query.join(' UNION ALL ')).then(function (tb) {
                 return tb;
             });
         }
         return sequelize.query('SELECT count(1) ct FROM spider.house where source = :source', null,
             {raw: true}, {source: source}).then(function (tb) {
                 return tb[0].ct;
+            });
+    }
+
+    function pageCount(source, number) {
+        return sequelize.query('SELECT count(1) as ct FROM spider.house where source = :source'
+            , null,
+            {raw: true},
+            {source: source}).then(function (tb) {
+                var count = tb[0].ct;
+                var pageCount = parseInt(count / number);
+                if (count % number !== 0)
+                    pageCount++;
+                return pageCount;
+            });
+    }
+
+    /*
+     * pagination of house
+     * */
+    function pagination(source, page, number) {
+        var offset = (page - 1) * number;
+        return sequelize.query('SELECT * FROM spider.house where source = :source order by publishDate desc limit :offset, :number'
+            , null,
+            {raw: true},
+            {source: source, offset: offset, number: number}).then(function (tb) {
+                return tb;
             });
     }
 
@@ -221,6 +247,8 @@ if (configs && configs.DBConnection) {
     module.exports.bulkCreate = bulkCreate;
     module.exports.findOne = findOne;
     module.exports.countBySource = countBySource;
+    module.exports.pagination = pagination;
+    module.exports.pageCount = pageCount;
 }
 
 module.exports.House = House;
