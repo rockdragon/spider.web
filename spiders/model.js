@@ -201,21 +201,21 @@ if (configs && configs.DBConnection) {
         if (_.isArray(source)) {
             var query = [];
             for (var i = 0, len = source.length; i < len; i++) {
-                var q = util.format('SELECT count(1) ct FROM spider.house where source = "%s"', source[i]);
+                var q = util.format('SELECT count(1) ct FROM spider.House where source = "%s"', source[i]);
                 query.push(q);
             }
             return sequelize.query(query.join(' UNION ALL ')).then(function (tb) {
                 return tb;
             });
         }
-        return sequelize.query('SELECT count(1) ct FROM spider.house where source = :source', null,
+        return sequelize.query('SELECT count(1) ct FROM spider.House where source = :source', null,
             {raw: true}, {source: source}).then(function (tb) {
                 return tb[0].ct;
             });
     }
 
     function pageCount(source, number) {
-        return sequelize.query('SELECT count(1) as ct FROM spider.house where source = :source'
+        return sequelize.query('SELECT count(1) as ct FROM spider.House where source = :source'
             , null,
             {raw: true},
             {source: source}).then(function (tb) {
