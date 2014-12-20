@@ -184,17 +184,6 @@ if (configs && configs.DBConnection) {
     }
 
     /*
-     * find one
-     */
-    function findOne(opts) {
-        opts.include = {
-            model: HousePicModel,
-            as: 'HousePics'
-        };
-        return HouseModel.findOne(opts);
-    }
-
-    /*
      * query a bundle of count, or single
      * */
     function countBySource(source) {
@@ -214,19 +203,6 @@ if (configs && configs.DBConnection) {
             });
     }
 
-    function pageCount(source, number) {
-        return sequelize.query('SELECT count(1) as ct FROM spider.House where source = :source'
-            , null,
-            {raw: true},
-            {source: source}).then(function (tb) {
-                var count = tb[0].ct;
-                var pageCount = parseInt(count / number);
-                if (count % number !== 0)
-                    pageCount++;
-                return pageCount;
-            });
-    }
-
     /*
      * pagination of house
      * */
@@ -234,10 +210,21 @@ if (configs && configs.DBConnection) {
         page = parseInt(page);
         number = parseInt(number);
         var offset = (page - 1) * number;
-        return sequelize.query('SELECT title FROM spider.House where source = :source order by publishDate desc limit :offset, :number'
+        return sequelize.query(
+            'SELECT id, city, overview, zone, title, price FROM spider.House where source = :source order by publishDate desc limit :offset, :number'
             , null,
             {raw: true},
             {source: source, offset: offset, number: number}).then(function (tb) {
+                return tb;
+            });
+    }
+
+    function getHouseDetail(houseId){
+        return sequelize.query(
+            'SELECT id, city, overview, address, zone, title, price, longitude,latitude FROM spider.House where id = :id'
+            , null,
+            {raw: true},
+            {id: houseId}).then(function (tb) {
                 return tb;
             });
     }
@@ -247,10 +234,9 @@ if (configs && configs.DBConnection) {
     module.exports.sequelize = sequelize;
     module.exports.synchronize = synchronize;
     module.exports.bulkCreate = bulkCreate;
-    module.exports.findOne = findOne;
     module.exports.countBySource = countBySource;
     module.exports.pagination = pagination;
-    module.exports.pageCount = pageCount;
+    module.exports.getHouseDetail = getHouseDetail;
 }
 
 module.exports.House = House;

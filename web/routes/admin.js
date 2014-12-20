@@ -28,4 +28,15 @@ router.post('/source/:source/:pageSize/:pageIndex', function*() {
     this.body = yield model.pagination(source, pageIndex, pageSize);
 });
 
+router.get('/house/:houseId', function*() {
+    var houseId = this.params.houseId;
+    var houseData = yield model.getHouseDetail(houseId);
+    houseData = houseData[0] || null;
+    console.log(houseData);
+    yield this.render('house', {
+        module: houseData ? houseData.title : '房情不存在',
+        houseData: houseData ? JSON.stringify(houseData) : '{}'
+    });
+});
+
 module.exports = router;

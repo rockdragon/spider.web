@@ -39,7 +39,7 @@ app.controller('sourceController', ['$scope', '$http', function ($scope, $http) 
                     $scope.setPagingData(largeLoad);
                 });
             }
-        }, 1000);
+        }, 2000);
     };
     $scope.$watch('pagingOptions', function (newVal, oldVal) {
         if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
@@ -60,6 +60,16 @@ app.controller('sourceController', ['$scope', '$http', function ($scope, $http) 
         showFooter: true,
         totalServerItems: 'totalServerItems',
         pagingOptions: $scope.pagingOptions,
-        filterOptions: $scope.filterOptions
+        filterOptions: $scope.filterOptions,
+        columnDefs: [
+            {
+                field: 'title', displayName: '标题', width: '42%',
+                cellTemplate: '<a href="/admin/house/{{row.getProperty(\'id\')}}" target="_blank">{{row.getProperty(\'title\')}}</a>'
+            },
+            {field: 'city', displayName: '城市', width: '6%'},
+            {field: 'overview', displayName: '概况', width: '26%'},
+            {field: 'zone', displayName: '区域', width: '20%'},
+            {field: 'price', displayName: '价格'}
+        ]
     };
 }]);
