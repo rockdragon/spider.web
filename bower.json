@@ -16,6 +16,6 @@
   ],
   "dependencies": {
     "angular": "*",
-    "ng-grid": "*"
+    "ng-grid": "~2.0.14"
   }
 }

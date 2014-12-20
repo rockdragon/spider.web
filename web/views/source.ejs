@@ -1,0 +1,23 @@
+<% include common/header %>
+<!-- Content Header (Page header) -->
+<aside class="right-side" ng-app="sourceApp">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <%=module%>
+            <small>spider</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="/admin"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li class="active"><%=module%></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content" ng-controller="sourceController as statCtrl">
+        <div class="gridStyle" ng-grid="gridOptions"></div>
+    </section><!-- /.content -->
+</aside><!-- /.right-side -->
+<% include common/footer %>
+<script src="/ng-grid/ng-grid-2.0.14.min.js"></script>
+<script src="/adminlte/js/source.js"></script>
