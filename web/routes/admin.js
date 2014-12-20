@@ -2,6 +2,7 @@ var Router = require('koa-router'),
     router = new Router();
 var getAbsolutePath = require('../../modules/other/pathUtils').getAbsolutePath;
 var model = require(getAbsolutePath('spiders/model'));
+var util = require('util');
 
 router.get('/', function *() {
     yield this.render('index', {module: 'Statistic'});
@@ -14,7 +15,8 @@ router.post('/stat', function *() {
 
 router.get('/source/:source', function*() {
     var source = this.params.source;
-    yield this.render('source', {module: source})
+    var total = yield model.countBySource(source);
+    yield this.render('source', {module: source, total: total})
 });
 
 router.post('/source/:source/:pageSize/:pageIndex', function*() {
@@ -23,7 +25,7 @@ router.post('/source/:source/:pageSize/:pageIndex', function*() {
     var pageIndex = this.params.pageIndex || 1;
 
     this.type = 'application/json';
-    this.body = yield model.pagination(source, pageSize, pageIndex);
+    this.body = yield model.pagination(source, pageIndex, pageSize);
 });
 
 module.exports = router;

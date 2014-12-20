@@ -231,8 +231,10 @@ if (configs && configs.DBConnection) {
      * pagination of house
      * */
     function pagination(source, page, number) {
+        page = parseInt(page);
+        number = parseInt(number);
         var offset = (page - 1) * number;
-        return sequelize.query('SELECT * FROM spider.house where source = :source order by publishDate desc limit :offset, :number'
+        return sequelize.query('SELECT title FROM spider.House where source = :source order by publishDate desc limit :offset, :number'
             , null,
             {raw: true},
             {source: source, offset: offset, number: number}).then(function (tb) {

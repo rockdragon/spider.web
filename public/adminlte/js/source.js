@@ -1,30 +1,65 @@
-var app = angular.module('sourceAPP', ['ngGrid']);
+var app = angular.module('sourceApp', ['ngGrid']);
 
-app.factory('dataService', ['$http', function($http){
-    return {
-        data: function(self) {
-            $http.post('/admin/stat').then(function (response) {
-                var json = response.data;
-                self.data.count_soufun = json[0].ct;
-                self.data.count_58 = json[1].ct;
-                self.data.count_anjuke = json[2].ct;
-            }, function (errResponse) {
-                console.error('some error occurs: ', errResponse);
-            });
+app.controller('sourceController', ['$scope', '$http', function ($scope, $http) {
+    $scope.source = document.getElementById('source').value;
+    $scope.total = document.getElementById('total').value;
+    console.log('source:', $scope.source, 'total:', $scope.total);
+
+    $scope.filterOptions = {
+        filterText: "",
+        useExternalFilter: true
+    };
+    $scope.totalServerItems = $scope.total;
+    $scope.pagingOptions = {
+        pageSizes: [10, 15, 20],
+        pageSize: 15,
+        currentPage: 1
+    };
+    $scope.setPagingData = function (data) {
+        $scope.myData = data;
+        //$scope.totalServerItems = data.length;
+        if (!$scope.$$phase) {
+            $scope.$apply();
         }
     };
-}]);
-
-app.controller('sourceController', ['$http', '$timeout', 'dataService',
-        function ($http, $timeout, dataService) {
-    var self = this;
-    self.data = {};
-    self.data.count_soufun = 'loading...';
-    self.data.count_58 = 'loading...';
-    self.data.count_anjuke = 'loading...';
-    var retrieve = function(){
-        dataService.data(self);
-        $timeout(retrieve, 5000);
+    $scope.getPagedDataAsync = function (pageSize, page, searchText) {
+        setTimeout(function () {
+            var data;
+            if (searchText) {
+                var ft = searchText.toLowerCase();
+                $http.get('jsonFiles/largeLoad.json').success(function (largeLoad) {
+                    data = largeLoad.filter(function (item) {
+                        return JSON.stringify(item).toLowerCase().indexOf(ft) != -1;
+                    });
+                    $scope.setPagingData(data, page, pageSize);
+                });
+            } else {
+                var url = ['/admin/source/', $scope.source, '/', pageSize, '/', page].join('');
+                $http.post(url).success(function (largeLoad) {
+                    $scope.setPagingData(largeLoad);
+                });
+            }
+        }, 1000);
     };
-    $timeout(retrieve, 1000);
+    $scope.$watch('pagingOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal && newVal.currentPage !== oldVal.currentPage) {
+            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, '');
+        }
+    }, true);
+    $scope.$watch('filterOptions', function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+            $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, '');
+        }
+    }, true);
+    $scope.getPagedDataAsync($scope.pagingOptions.pageSize, $scope.pagingOptions.currentPage, '');
+
+
+    $scope.gridOptions = {
+        data: 'myData',
+        enablePaging: true,
+        showFooter: true,
+        totalServerItems: 'totalServerItems',
+        pagingOptions: $scope.pagingOptions,
+        filterOptions: $scope.filterOptions
+    };
 }]);
