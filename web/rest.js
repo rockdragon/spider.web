@@ -23,5 +23,5 @@ app.use(function *(){
     this.body = 'Authorized.';
 });
 
-app.listen(3001);
-console.log('listening on port 3001');
+app.listen(config.rest_port);
+console.log('listening on port', config.rest_port);
