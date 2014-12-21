@@ -221,7 +221,7 @@ if (configs && configs.DBConnection) {
 
     function getHouseDetail(houseId){
         return sequelize.query(
-            'SELECT id, city, overview, address, zone, title, price, longitude,latitude FROM spider.House where id = :id'
+            'SELECT id, city, overview, zone, zone, title, price, longitude,latitude FROM spider.House where id = :id'
             , null,
             {raw: true},
             {id: houseId}).then(function (tb) {
