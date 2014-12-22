@@ -69,7 +69,9 @@ function listPage(opt) {
 var configs = require('../modules/config/configUtils').getConfigs();
 if (configs && configs.DBConnection) {
     var Sequelize = require('sequelize')
-        , sequelize = new Sequelize(configs.DBConnection);
+        , sequelize = new Sequelize(configs.DBConnection, {
+            pool: { maxConnections: 20, maxIdleTime: 30}
+        });
     var cryptoUtils = require('../modules/other/cryptoUtils');
     var _ = require('underscore');
     var util = require('util');
