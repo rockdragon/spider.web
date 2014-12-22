@@ -19,6 +19,9 @@ app.use(function *(next){
 
 app.use(auth(config.auth));
 
+/*
+* API routers
+* */
 app.use(function *(){
     this.body = 'Authorized.';
 });
