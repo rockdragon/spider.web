@@ -1,11 +1,11 @@
 var Router = require('koa-router'),
     router = new Router();
-var getAbsolutePath = require('../../modules/other/pathUtils').getAbsolutePath;
+var getAbsolutePath = require('../../../modules/other/pathUtils').getAbsolutePath;
 var model = require(getAbsolutePath('spiders/model'));
 var util = require('util');
 
 router.get('/', function *() {
-    yield this.render('index', {module: 'Statistic'});
+    yield this.render('../www/views/index', {module: 'Statistic'});
 });
 
 router.post('/stat', function *() {
@@ -16,7 +16,7 @@ router.post('/stat', function *() {
 router.get('/source/:source', function*() {
     var source = this.params.source;
     var total = yield model.countBySource(source);
-    yield this.render('source', {module: source, total: total})
+    yield this.render('../www/views/source', {module: source, total: total})
 });
 
 router.post('/source/:source/:pageSize/:pageIndex', function*() {
@@ -33,7 +33,7 @@ router.get('/house/:houseId', function*() {
     var houseData = yield model.getHouseDetail(houseId);
     houseData = houseData[0] || null;
     console.log(houseData);
-    yield this.render('house', {
+    yield this.render('../www/views/house', {
         module: houseData ? houseData.title : '房情不存在',
         houseData: houseData ? JSON.stringify(houseData) : '{}'
     });

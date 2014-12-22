@@ -24,7 +24,7 @@ render(app, {
 });
 
 //routes
-var admin = require(getAbsolutePath('web/routes/admin'));
+var admin = require(getAbsolutePath('web/www/routes/admin'));
 app.use(mount('/admin', admin.middleware()));
 
 //listen
