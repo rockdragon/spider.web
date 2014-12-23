@@ -5,9 +5,13 @@ var render = require('koa-ejs');
 var serve = require('koa-static');
 var getAbsolutePath = require('../modules/other/pathUtils').getAbsolutePath;
 var config = require("../modules/config/configUtils").getConfigs();
+var logger = require("../modules/logger/logUtils");
 
 //settings
 var app = koa();
+app.on('error', function(err){
+   logger.error(err.stack);
+});
 app.use(router(app));
 app.use(serve(getAbsolutePath('public'), {
     maxAge: 1000 * 86400 * 30
