@@ -20,13 +20,4 @@ var logger = new (winston.Logger)({
         })
     ]
 });
-
-/*
- supply a integration of console-logger and file-logger
- * */
-module.exports.info = function (msg) {
-    logger.info(msg);
-};
-module.exports.error = function (msg) {
-    logger.error(msg);
-};
+module.exports = logger;

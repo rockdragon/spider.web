@@ -10,7 +10,7 @@ var logger = require("../modules/logger/logUtils");
 //settings
 var app = koa();
 app.on('error', function(err){
-   logger.error(err.stack);
+   logger.error(err, err.ctx);
 });
 app.use(router(app));
 app.use(serve(getAbsolutePath('public'), {
