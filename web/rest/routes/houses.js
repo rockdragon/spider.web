@@ -18,3 +18,4 @@ router.post('/', function *() {
     this.status = 201;
     this.body = util.format('%d records created', j);
 });
+module.exports = router;
