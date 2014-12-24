@@ -21,7 +21,8 @@
     "koa-ejs": "*",
     "koa-static": "*",
     "koa-router": "*",
-    "koa-basic-auth": "*"
+    "koa-basic-auth": "*",
+    "co-body": "*"
   },
   "engines": {
     "node": ">=0.11.14"

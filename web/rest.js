@@ -22,6 +22,9 @@ app.use(auth(config.auth));
 /*
 * API routers
 * */
+var houses = require(getAbsolutePath('web/rest/routes/houses'));
+app.use(mount('/houses', houses.middleware()));
+
 app.use(function *(){
     this.body = 'Authorized.';
 });
