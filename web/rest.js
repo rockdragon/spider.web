@@ -2,6 +2,7 @@ var auth = require('koa-basic-auth');
 var koa = require('koa');
 var app = koa();
 var config = require("../modules/config/configUtils").getConfigs();
+var getAbsolutePath = require('../modules/other/pathUtils').getAbsolutePath;
 
 app.use(function *(next){
     try {
