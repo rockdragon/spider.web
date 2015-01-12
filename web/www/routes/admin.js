@@ -34,7 +34,7 @@ router.get('/house/:houseId', function*() {
     houseData = houseData[0] || null;
     console.log(houseData);
     yield this.render('../www/views/house', {
-        module: houseData ? houseData.title : '房情不存在',
+        module: houseData ? houseData.title : '房情不存在', 
         houseData: houseData ? JSON.stringify(houseData) : '{}'
     });
 });
